@@ -1,0 +1,10 @@
+# scratch / build artifacts
+*.cast
+*.zip
+__pycache__/
+*.pyc
+.DS_Store
+
+# local env
+.env
+.venv/

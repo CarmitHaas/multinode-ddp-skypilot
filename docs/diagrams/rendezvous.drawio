@@ -1,0 +1,90 @@
+<mxfile host="app.diagrams.net" agent="claude-code" version="29.4.0">
+  <diagram id="ddp-rendezvous" name="DDP rendezvous">
+    <mxGraphModel dx="1400" dy="940" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="940" background="#ffffff" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" parent="1" vertex="1" style="text;html=1;align=center;verticalAlign=middle;fontSize=22;fontStyle=1;fillColor=none;strokeColor=none;" value="DDP Rendezvous — how two nodes become one job">
+          <mxGeometry height="36" width="1000" x="200" y="22" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" parent="1" vertex="1" style="text;html=1;align=center;verticalAlign=middle;fontSize=13;fontStyle=2;fontColor=#666666;fillColor=none;strokeColor=none;" value="torchrun ranks · MASTER_ADDR from SKYPILOT_NODE_IPS · NCCL handshake · all-reduce over 500 steps">
+          <mxGeometry height="22" width="1200" x="100" y="64" as="geometry" />
+        </mxCell>
+
+        <!-- ACTOR HEADS -->
+        <mxCell id="a_sky" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eef2f7;strokeColor=#3b5b78;strokeWidth=2;fontColor=#3b5b78;fontStyle=1;fontSize=12;" value="SkyPilot&#10;(local client + API server)">
+          <mxGeometry height="52" width="220" x="110" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="a_pod0" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1565c0;strokeWidth=3;fontColor=#1565c0;fontStyle=1;fontSize=12;" value="Pod 0 · NODE_RANK=0&#10;(MASTER)">
+          <mxGeometry height="52" width="240" x="560" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="a_pod1" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1565c0;strokeWidth=2;fontColor=#1565c0;fontStyle=1;fontSize=12;" value="Pod 1 · NODE_RANK=1">
+          <mxGeometry height="52" width="240" x="1040" y="110" as="geometry" />
+        </mxCell>
+
+        <!-- LIFELINES -->
+        <mxCell id="ll_sky" parent="1" edge="1" style="endArrow=none;dashed=1;strokeColor=#999999;strokeWidth=1.5;html=1;" >
+          <mxGeometry relative="1" as="geometry"><mxPoint x="220" y="162" as="sourcePoint" /><mxPoint x="220" y="850" as="targetPoint" /></mxGeometry>
+        </mxCell>
+        <mxCell id="ll_pod0" parent="1" edge="1" style="endArrow=none;dashed=1;strokeColor=#999999;strokeWidth=1.5;html=1;" >
+          <mxGeometry relative="1" as="geometry"><mxPoint x="680" y="162" as="sourcePoint" /><mxPoint x="680" y="850" as="targetPoint" /></mxGeometry>
+        </mxCell>
+        <mxCell id="ll_pod1" parent="1" edge="1" style="endArrow=none;dashed=1;strokeColor=#999999;strokeWidth=1.5;html=1;" >
+          <mxGeometry relative="1" as="geometry"><mxPoint x="1160" y="162" as="sourcePoint" /><mxPoint x="1160" y="850" as="targetPoint" /></mxGeometry>
+        </mxCell>
+
+        <!-- MESSAGES -->
+        <mxCell id="m1" parent="1" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#7c3aed;strokeWidth=2;fontSize=11;fontColor=#7c3aed;" value="start container + inject env  (NODE_RANK=0, NUM_NODES=2, SKYPILOT_NODE_IPS)">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="220" y="212" as="sourcePoint" /><mxPoint x="680" y="212" as="targetPoint" /></mxGeometry>
+        </mxCell>
+        <mxCell id="m2" parent="1" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#7c3aed;strokeWidth=2;fontSize=11;fontColor=#7c3aed;" value="start container + inject env  (NODE_RANK=1, NUM_NODES=2)">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="220" y="256" as="sourcePoint" /><mxPoint x="1160" y="256" as="targetPoint" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="note_master" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff8e1;strokeColor=#f9a825;strokeWidth=1.5;fontSize=11;align=center;" value="MASTER_ADDR = head of SKYPILOT_NODE_IPS&#10;MASTER_PORT = 29500">
+          <mxGeometry height="48" width="240" x="560" y="292" as="geometry" />
+        </mxCell>
+        <mxCell id="note_tr0" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;strokeWidth=1;fontSize=10;align=center;" value="torchrun --node_rank=0&#10;--master_addr=$MASTER_ADDR --master_port=29500">
+          <mxGeometry height="46" width="240" x="560" y="352" as="geometry" />
+        </mxCell>
+        <mxCell id="note_tr1" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;strokeWidth=1;fontSize=10;align=center;" value="torchrun --node_rank=1&#10;--master_addr=$MASTER_ADDR --master_port=29500">
+          <mxGeometry height="46" width="240" x="1040" y="352" as="geometry" />
+        </mxCell>
+
+        <mxCell id="m4" parent="1" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#ea580c;strokeWidth=2;fontSize=11;fontColor=#ea580c;" value="TCP rendezvous → MASTER_ADDR:29500">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="1160" y="424" as="sourcePoint" /><mxPoint x="680" y="424" as="targetPoint" /></mxGeometry>
+        </mxCell>
+        <mxCell id="m5" parent="1" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=classic;endArrow=classic;strokeColor=#5e35b1;strokeWidth=3;fontSize=11;fontStyle=1;fontColor=#5e35b1;" value="NCCL init_process_group(nccl) · exchange rank / world_size=2">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="680" y="476" as="sourcePoint" /><mxPoint x="1160" y="476" as="targetPoint" /></mxGeometry>
+        </mxCell>
+        <mxCell id="note_nccl" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ede7f6;strokeColor=#5e35b1;strokeWidth=2;fontSize=11;align=center;fontStyle=1;" value="NCCL INFO: Bootstrap eth0 · NET/Socket · Ring / Channel setup    ←  the NCCL handshake, captured in training_log.txt">
+          <mxGeometry height="44" width="720" x="560" y="506" as="geometry" />
+        </mxCell>
+
+        <mxCell id="loop_box" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=6 6;fillColor=none;strokeColor=#2e7d32;strokeWidth=2;verticalAlign=top;align=left;spacingLeft=12;spacingTop=6;fontColor=#2e7d32;fontStyle=1;fontSize=12;" value="loop × 500 steps">
+          <mxGeometry height="150" width="760" x="540" y="572" as="geometry" />
+        </mxCell>
+        <mxCell id="note_fb" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;strokeWidth=1;fontSize=10;align=center;" value="each rank: forward + backward on its own data shard (DistributedSampler)">
+          <mxGeometry height="40" width="720" x="560" y="608" as="geometry" />
+        </mxCell>
+        <mxCell id="m8" parent="1" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=classic;endArrow=classic;strokeColor=#5e35b1;strokeWidth=3;fontSize=11;fontStyle=1;fontColor=#5e35b1;" value="NCCL all-reduce(grads) → average → optimizer step">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="680" y="678" as="sourcePoint" /><mxPoint x="1160" y="678" as="targetPoint" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="m9" parent="1" edge="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=classic;strokeColor=#1565c0;strokeWidth=2.5;fontSize=11;fontColor=#1565c0;" value="stdout: NCCL init + per-step loss + [Done]">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="680" y="762" as="sourcePoint" /><mxPoint x="220" y="762" as="targetPoint" /></mxGeometry>
+        </mxCell>
+        <mxCell id="note_end" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff8e1;strokeColor=#f9a825;strokeWidth=1.5;fontSize=11;align=center;" value="dist.destroy_process_group(); pods exit">
+          <mxGeometry height="40" width="240" x="560" y="792" as="geometry" />
+        </mxCell>
+
+        <!-- LEGEND -->
+        <mxCell id="legend" parent="1" vertex="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fafafa;strokeColor=#bdbdbd;strokeWidth=1;align=left;verticalAlign=top;spacingLeft=10;spacingTop=8;fontSize=11;" value="&lt;b&gt;Legend — message colors&lt;/b&gt;&lt;br&gt;&lt;font color=&#39;#7c3aed&#39;&gt;&#9632;&lt;/font&gt; orchestration (SkyPilot starts pods + env)&lt;br&gt;&lt;font color=&#39;#ea580c&#39;&gt;&#9632;&lt;/font&gt; TCP rendezvous (worker → master)&lt;br&gt;&lt;font color=&#39;#5e35b1&#39;&gt;&#9632;&lt;/font&gt; NCCL collective (init + all-reduce)&lt;br&gt;&lt;font color=&#39;#1565c0&#39;&gt;&#9632;&lt;/font&gt; logs back to client (sky logs)">
+          <mxGeometry height="150" width="300" x="110" y="500" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
