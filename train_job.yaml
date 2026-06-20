@@ -3,7 +3,7 @@ name: nebius-ddp-training
 workdir: .
 
 resources:
-  infra: k8s/nebius-mk8s-ddp-cluster-e00f3p5r1de4jzmw38
+  infra: k8s/<your-mk8s-cluster-context>
   accelerators: "L40S:1"
   memory: "16+"
   image_id: docker:docker.io/carmithaas/nebius-trainer:v2

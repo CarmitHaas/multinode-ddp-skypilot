@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "id": "mk8snodegroup-e00xh3jbk92526at89",
-    "parent_id": "mk8scluster-e00f3p5r1de4jzmw38",
+    "id": "mk8snodegroup-REDACTED",
+    "parent_id": "mk8scluster-REDACTED",
     "name": "ddp-l40s-2",
     "resource_version": "1",
     "created_at": "2026-06-20T20:38:49Z",
@@ -24,7 +24,7 @@
       "os": "ubuntu24.04",
       "network_interfaces": [
         {
-          "subnet_id": "vpcsubnet-e00m40xydvh8j3pf13"
+          "subnet_id": "vpcsubnet-REDACTED"
         }
       ]
     }

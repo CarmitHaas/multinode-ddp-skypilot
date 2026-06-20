@@ -9,7 +9,7 @@ the recording, then deletes the cluster so billing stops.
 - GPU quota: a fresh tenant often has 0 GPU quota. This is the one thing that can block the
   whole run, so check it first and, if 0, request an increase early (approval is not always
   instant). The CLI enumerates the quota (existence and usage state, not the number):
-  `nebius quotas quota-allowance get-by-name --parent-id project-e00mzjcgpr00yq3j88hbzg --region eu-north1 --name compute.instance.gpu.l40s --format json`
+  `nebius quotas quota-allowance get-by-name --parent-id <your-project-id> --region eu-north1 --name compute.instance.gpu.l40s --format json`
   The actual numeric limit and the request button are on the Console Quotas page (eu-north1).
 - Image already public on Docker Hub: `docker.io/carmithaas/nebius-trainer:v1`.
 - `train_job.yaml` has one placeholder left: `<CLUSTER_NAME>`.
