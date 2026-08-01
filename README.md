@@ -66,7 +66,7 @@ uv tool install --with pip "skypilot[nebius]"
 ### The GPU run (Nebius, eu-north1)
 
 ```bash
-# 1. create a managed Kubernetes cluster with a 2-node L40S group (preset gpu-l40s-1gpu, 100 GB SSD)
+# 1. create a managed Kubernetes cluster with a 2-node L40S group (preset 1gpu-16vcpu-96gb, 100 GB SSD)
 # 2. fetch credentials
 nebius mk8s cluster get-credentials --id <CLUSTER_ID> --external --kubeconfig ~/.kube/config
 kubectl get nodes                       # two nodes, Ready
@@ -117,6 +117,11 @@ NCCL INFO Channel 00/0 : 0[0] -> 1[0] [receive] via NET/Socket/0
 
 This is a short pipeline-validation run (small model, 500 steps, a deliberately low learning rate),
 so the goal is proving the distributed setup end to end, not chasing a converged model.
+
+> **Why L40S (the reference setup used H100):** my H100 quota didn't come through in time for the
+> submission window, so the run uses 2× L40S with the matching smaller preset (`1gpu-16vcpu-96gb`).
+> The topology is what the exercise is about and it is unchanged: 2 nodes, 1 GPU each, world size 2,
+> the same NCCL rendezvous, the same job YAML. Only raw throughput differs.
 
 ![Live run](docs/diagrams/ddp-run.gif)
 
